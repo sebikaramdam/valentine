@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💘</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffd6e8, #fff0f6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    background: white;
+    width: 90%;
+    max-width: 360px;
+    padding: 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+h1 {
+    font-size: 20px;
+    color: #ff4d88;
+    margin-bottom: 15px;
+}
+
+img {
+    width: 220px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+
+.option {
+    background: #ffe6ef;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.option:hover {
+    background: #ffccd9;
+}
+
+.result {
+    font-size: 32px;
+    margin-top: 10px;
+    display: none;
+}
+
+.btn-area {
+    position: relative;
+    height: 70px;
+}
+
+button {
+    padding: 12px 26px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    position: absolute;
+}
+
+#yes { background:#ff4d88; color:white; left:20%; }
+#no { background:#999; color:white; left:55%; }
+</style>
+</head>
+
+<body>
+
+<!-- QUIZ CARD -->
+<div class="card" id="quizCard">
+    <h1 id="quizQn"></h1>
+    <div id="options"></div>
+    <div class="result" id="quizResult"></div>
+</div>
+
+<!-- VALENTINE CARD -->
+<div class="card" id="valentineCard" style="display:none;">
+    <h1 id="question"></h1>
+    <img id="image">
+    <div class="btn-area">
+        <button id="yes" onclick="yesClick()">Yes</button>
+        <button id="no" onmouseover="moveNo()" ontouchstart="moveNo()">No</button>
+    </div>
+</div>
+
+<script>
+/* ================= QUIZ PART ================= */
+
+const quiz = [
+    {
+        q: "For you, what was the thing that made me realise I fell in love with you? 💝",
+        options: [
+            "When you smile shyly",
+            "When you proposed me",
+            "When you tried hard and made efforts",
+            "I don't remember 😌",
+            "whenu staywithme inmy hard days"
+        ],
+        correct: 3
+    },
+    {
+        q: 'Will you click "No" to make me smile? 😏',
+        options: ["Yes", "No"],
+        correct: 0
+    },
+    {
+        q: "Do you think you are a bad boy? 😏",
+        options: ["Yes", "No"],
+        correct: 1
+    },
+    {
+        q: "When you feel hurt, sad, lost, or broken… what should you do first? 🥺",
+        options: [
+            "Come to your partner",
+            "Take some alone time",
+            "Talk with friends",
+            "Do something refreshing"
+        ],
+        correct: 0
+    },
+    {
+        q: "When things get hard and you feel like giving up, you should… 💖",
+        options: [
+            "Hug your pukulu 🤍",
+            "Sleep, eat, run",
+            "Quit"
+        ],
+        correct: 0
+    }
+];
+
+let quizIndex = 0;
+
+function loadQuiz() {
+    document.getElementById("quizResult").style.display = "none";
+    document.getElementById("quizQn").innerHTML = quiz[quizIndex].q;
+
+    const optDiv = document.getElementById("options");
+    optDiv.innerHTML = "";
+
+    quiz[quizIndex].options.forEach((opt, i) => {
+        const div = document.createElement("div");
+        div.className = "option";
+        div.innerHTML = opt;
+        div.onclick = () => checkAnswer(i);
+        optDiv.appendChild(div);
+    });
+}
+
+function checkAnswer(selected) {
+    const result = document.getElementById("quizResult");
+    result.style.display = "block";
+
+    if (selected === quiz[quizIndex].correct) {
+        result.innerHTML = "❤️ LOVE ❤️";
+        setTimeout(() => {
+            quizIndex++;
+            if (quizIndex < quiz.length) {
+                loadQuiz();
+            } else {
+                document.getElementById("quizCard").style.display = "none";
+                document.getElementById("valentineCard").style.display = "block";
+                loadStep();
+            }
+        }, 1000);
+    } else {
+        result.innerHTML = "😡 ANGRY 😡";
+    }
+}
+
+loadQuiz();
+
+/* ================= VALENTINE PART ================= */
+
+const yourName = "Sebu";
+const partnerName = "Nipu";
+
+const steps = [
+    { q:`Hlo Mr. ${partnerName} 😊🐧✨😁 Do you hate me?`, img:"sebi/pic1.jpg" },
+    { q:"I have something to ask you 💭do u love me?", img:"sebi/pic2.jpg" },
+    { q:"O! My Hubibi 😳 now you're my bibi 💖", img:"sebi/pic4.jpg" },
+    { q:"I will always protect you 💕 Believe me?", img:"sebi/pic7.jpg" },
+    { q:`forget about valentine,Will you be my lifeline 🫅🫂, Mr. ${partnerName}? 💘`, img:"sebi/pic5.jpg" }
+];
+
+let index = 0;
+
+function loadStep() {
+    document.getElementById("question").innerHTML = steps[index].q;
+    document.getElementById("image").src = steps[index].img;
+}
+
+function moveNo() {
+    const no = document.getElementById("no");
+    no.style.transform =
+        `translate(${Math.random()*200-100}px, ${Math.random()*120-60}px)`;
+}
+
+function yesClick() {
+    index++;
+    if (index < steps.length) {
+        loadStep();
+    } else {
+        document.body.innerHTML = `
+        <div style="height:100vh;display:flex;flex-direction:column;
+        justify-content:center;align-items:center;
+        background:linear-gradient(135deg,#ffd6e8,#fff0f6)">
+            <h1 style="color:#ff4d88">Yayyy! 😍💖iknew that</h1>
+            <p>love love lovalove ${yourName} ❤️ ${partnerName}
+                love love</p>
+        </div>`;
+    }
+}
+</script>
+
+</body>
+</html>
